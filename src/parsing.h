@@ -1,8 +1,12 @@
-#include <stdint.h>
+#ifndef PARSING_H
 #define PARSING_H
-// function to parse sbus channel
+
+#include <stdint.h>
+
+// Function to parse SBUS channels from buffer
 uint16_t *parse_buffer(uint8_t buff[]);
 
-// interpolate channel and return pwm value 
+// Interpolate channel value and return PWM value
 int interpolation(uint16_t channel);
 
+#endif // PARSING_H

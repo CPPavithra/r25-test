@@ -48,6 +48,15 @@ I understood that the channel values must be interpolated to pwm(pulse width mod
 
 ## Thought Process
 I checked up the scaling used for the particular motor and implemented the interpolation formula related to it.
+What I have understood from here is that-
+1. First read the SBus data from the RC
+2. Then it extracts thee data from the channels
+3. Then it calculated the PWM by using the linear interpolation formula
+4. The interpolation changes the RC channel value to pwm values
+5. Then it takes the pwm value and sends it to the motor driver
+6. I have also included a 5ms (5000) delay to control the speed of the while loop
+7. The readsbus function reads the data of the sbus into the buffer
+8. The write to sb function writes the data to the saberbooth 
 
 ## Implementation
 How did you decide to implement your solution.
@@ -64,7 +73,7 @@ For the interpolation of pwm(pulse width modulation)
     return pwm;
 (in parsing.c file, the function is only declared in parsing.h, not defined)
 
-(Moved every file to src, so make build make check will be run from that directory)
+(Moved every file to src, so make build make check will be run from that directory.It also runs otherwise)
 
 Mention the details, such as the scaling used in the interpolation and how you tested it.
 Scaling Used-
@@ -72,7 +81,9 @@ min_sbus = 0; (for the Sabertooth 2x60 motor driver)
 max_sbus = 2047;
 min_pwm = 1000;
 max_pwm = 2000;
-
+//I have included this to avoid errors and to ensure that the channel is within the range
+    if (channel < min_sbus) channel = min_sbus;
+    if (channel > max_sbus) channel = max_sbus;
 # Google Form
 [Link to Repo Submission](https://docs.google.com/forms/d/e/1FAIpQLSeKVbm2dqWxwA5lbEkRfzY8KF619mI5ibGs0Cm2e5wrb0hoWQ/viewform)
 

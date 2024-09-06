@@ -1,28 +1,26 @@
 #include <stdint.h>
 #include <stdio.h>
-#include <unistd.h> // For usleep
+#include <unistd.h> // For usleep function
 #include "serial.h"
 #include "parsing.h"
 
 void receive_sbuspackets(uint8_t* sbus_packet)
 {
-    //code
+    // code here with the data
 }
-
 int main(int argc, char** argv) {
-    if (argc < 3) {
+    /*if (argc < 3) {
         fprintf(stderr, "Usage: %s <SBUS_PORT> <SABERTOOTH_PORT>\n", argv[0]);
         return 1;
-    }
-
+    }(commented to test run it)*/
     char *port_name_1 = argv[1]; // SBUS 
-    char *port_name_2 = argv[2]; // Sabertooth1
+    char *port_name_2 = argv[2]; // Sabertooth
 
     FILE *sbus; 
     FILE *sabertooth;
 
     // To store SBUS packets
-    uint8_t sbus_packet[25]; // Assuming SBUS packets are 25 bytes long
+    uint8_t sbus_packet[25]; 
 
     // To store value of individual RC channel
     uint16_t *channel;
@@ -33,13 +31,13 @@ int main(int argc, char** argv) {
     // Opening serial port for serial communication with Sabertooth and SBUS
     sbus = open_file(port_name_1, "rb");
     if (sbus == NULL) {
-        /*perror("Error opening SBUS port");
+        perror("Error opening SBUS port");
         return 1;
     }
-
+  //Error detection
     sabertooth = open_file(port_name_2, "w+");
     if (sabertooth == NULL) {
-        /*perror("Error opening Sabertooth port");*/
+        perror("Error opening Sabertooth port");
         close_file(sbus);
         return 1;
     }
@@ -51,12 +49,18 @@ int main(int argc, char** argv) {
 
         // Parse SBUS packet
         channel = parse_buffer(sbus_packet);
+        if (channel == NULL) {
+            fprintf(stderr, "Error parsing SBUS data\n");
+            close_file(sbus);
+            close_file(sabertooth);
+            return 1;
+        }
 
         // Interpolate to get PWM range for Sabertooth 1
         pwm = interpolation(channel[0]);
 
         // Write data to Sabertooth 1
-        write_to_SB(sabertooth, "%d", pwm);
+        write_to_SB(sabertooth, "%d\n", pwm);
         
         // Delay to throttle loop
         usleep(5000); // Gives a 5ms delay

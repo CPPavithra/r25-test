@@ -1,10 +1,10 @@
 CC =gcc
 CFLAGS = -Og -g -Wall
 
-all: build
+all: quine-gen
 
 build:
-	gcc -g -Wall main.c serial.c parsing.c -o program
+	gcc -g -Wall main.c serial.c parsing.c -o main.exe
 check:
 	@echo "--------------------------------------------"
 	@echo "Checking..."
