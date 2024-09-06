@@ -1,13 +1,12 @@
 #include "serial.h"
 #include <errno.h>
-#include <stdio.h>
 #include <stdarg.h>
 
 // Function to open the serial port
-FILE* open_file(const char* portname, const char* mode) {
+FILE* open_file(const char* portname, char* mode) { // Match the declaration
     FILE* file_ptr = fopen(portname, mode);
     if (file_ptr == NULL) {
-        perror("Error opening file");
+        printf("Error opening %s : %d\n", portname, errno);
         return NULL;
     }
     return file_ptr;
@@ -15,21 +14,17 @@ FILE* open_file(const char* portname, const char* mode) {
 
 // Function to read data from SBUS
 void read_SBUS(uint8_t* buffer, size_t size, size_t n, FILE* file_ptr) {
-    size_t rc = fread(buffer, size, n, file_ptr);
-    if (rc != n) {
-        perror("Error reading file");
-    }
+    int rc = fread(buffer, size, n, file_ptr);
+    if (rc != n) printf("Error reading file : %d", errno);
 }
 
 // Function to write data to Sabertooth
-void write_to_SB(FILE* file_ptr, const char* fmt, ...) {
+void write_to_SB(FILE* file_ptr, char* fmt, ...) { // Match the declaration
     va_list args;
     va_start(args, fmt);
     int rc = vfprintf(file_ptr, fmt, args);
     va_end(args);
-    if (rc < 0) {
-        perror("Error writing to file");
-    }
+    if (rc < 0) printf("Error writing to file : %d", errno);
 }
 
 // Function to close the serial port

@@ -44,7 +44,7 @@ If you are able to compile your code successfully you should see something like 
 
 # Solution
 ## Understanding
-I understood that the channel values must be interpolated to pwm(pulse width modulation value)- to control the amount of power delivered. I have implemented LINEAR INTERPOLATION here. 
+I understood that the channel values must be interpolated to pwm(pulse width modulation value)- to control the amount of power delivered to the motor for it to move. I have implemented LINEAR INTERPOLATION here. 
 
 ## Thought Process
 I checked up the scaling used for the particular motor and implemented the interpolation formula related to it.
@@ -52,11 +52,13 @@ What I have understood from here is that-
 1. First read the SBus data from the RC
 2. Then it extracts thee data from the channels
 3. Then it calculated the PWM by using the linear interpolation formula
-4. The interpolation changes the RC channel value to pwm values
-5. Then it takes the pwm value and sends it to the motor driver
-6. I have also included a 5ms (5000) delay to control the speed of the while loop
-7. The readsbus function reads the data of the sbus into the buffer
-8. The write to sb function writes the data to the saberbooth 
+4. The readsbus function reads the data of the sbus into the buffer
+5. The write_to_sb function writes the data to the saberbooth 
+6. The interpolation changes the RC channel value to pwm values
+7. Then it takes the pwm value and sends it to the motor driver
+8. I have also included a 5ms (5000) delay to control the speed of the while loop
+
+The imported header files were originally of the form #include<parsing.h> and #include<serial.h>, I changed it to #include "parsing.h" and "serial.h" as it is a custom header file.
 
 ## Implementation
 How did you decide to implement your solution.
@@ -73,17 +75,18 @@ For the interpolation of pwm(pulse width modulation)
     return pwm;
 (in parsing.c file, the function is only declared in parsing.h, not defined)
 
-(Moved every file to src, so make build make check will be run from that directory.It also runs otherwise)
+(Moved every file to src, so make build make check will be run from that directory.It also runs otherwise(i.e.I have changed the makefile build inside the src makefile and kept the original in the other makefile for testing purpose))
 
 Mention the details, such as the scaling used in the interpolation and how you tested it.
 Scaling Used-
-min_sbus = 0; (for the Sabertooth 2x60 motor driver)
+min_sbus = 0; (These values I have checked for the Sabertooth 2x60 motor driver)
 max_sbus = 2047;
 min_pwm = 1000;
 max_pwm = 2000;
 //I have included this to avoid errors and to ensure that the channel is within the range
     if (channel < min_sbus) channel = min_sbus;
     if (channel > max_sbus) channel = max_sbus;
+    
 # Google Form
 [Link to Repo Submission](https://docs.google.com/forms/d/e/1FAIpQLSeKVbm2dqWxwA5lbEkRfzY8KF619mI5ibGs0Cm2e5wrb0hoWQ/viewform)
 
