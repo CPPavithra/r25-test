@@ -44,15 +44,34 @@ If you are able to compile your code successfully you should see something like 
 
 # Solution
 ## Understanding
-Describe what you understood about the problem.
+I understood that the channel values must be interpolated to pwm(pulse width modulation value)- to control the amount of power delivered. I have implemented LINEAR INTERPOLATION here. 
 
 ## Thought Process
-After understanding the problem, describe how you decided to proceed towards solving the question.
+I checked up the scaling used for the particular motor and implemented the interpolation formula related to it.
 
 ## Implementation
 How did you decide to implement your solution.
 
+I moved the custom header folders into one file(src) as it was showing error while compilation. I also changed the makefile build function to
+build:
+	gcc -g -Wall main.c serial.c parsing.c -o program
+For the interpolation of pwm(pulse width modulation)
+	  int min_sbus = 0; (for the Sabertooth 2x60 motor driver)
+    int max_sbus = 2047;
+    int min_pwm = 1000;
+    int max_pwm = 2000;
+    int pwm = min_pwm+(channel-min_sbus)*(max_pwm-min_pwm)/(max_sbus - min_sbus); (formula checked)
+    return pwm;
+(in parsing.c file, the function is only declared in parsing.h, not defined)
+
+(Moved every file to src, so make build make check will be run from that directory)
+
 Mention the details, such as the scaling used in the interpolation and how you tested it.
+Scaling Used-
+min_sbus = 0; (for the Sabertooth 2x60 motor driver)
+max_sbus = 2047;
+min_pwm = 1000;
+max_pwm = 2000;
 
 # Google Form
 [Link to Repo Submission](https://docs.google.com/forms/d/e/1FAIpQLSeKVbm2dqWxwA5lbEkRfzY8KF619mI5ibGs0Cm2e5wrb0hoWQ/viewform)
