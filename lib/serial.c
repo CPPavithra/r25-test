@@ -5,8 +5,7 @@
 FILE* open_file(const char* portname, char* mode) {
 	FILE* file_ptr = fopen(portname, mode);
 	if (file_ptr == NULL) {
-		printf("Error opening %s : %d\n", portname,
-			errno);
+		printf("Error opening %s : %d\n", portname,errno);
 		return NULL;
 	}
 	return file_ptr;
@@ -14,8 +13,12 @@ FILE* open_file(const char* portname, char* mode) {
 
 // Function to read data from SBUS
 void read_SBUS(uint8_t* buffer, size_t size, size_t n, FILE* file_ptr) {
-	int rc = fread(buffer, size, n, file_ptr);
-	if(rc != n) printf("Error reading file : %d", errno);
+	size_t rc = fread(buffer, size, n, file_ptr);
+	if(rc != n) 
+	{
+		printf("Error reading file : %d", errno);
+		return;
+	}
 }
 
 // Function to write data to Sabertooth

@@ -4,17 +4,13 @@
 #include "serial.h"
 #include "parsing.h"
 
-void receive_sbuspackets(uint8_t* sbus_packet)
-{
+void receive_sbuspackets(uint8_t* sbus_packet) {
     // code here with the data
 }
+
 int main(int argc, char** argv) {
-    /*if (argc < 3) {
-        fprintf(stderr, "Usage: %s <SBUS_PORT> <SABERTOOTH_PORT>\n", argv[0]);
-        return 1;
-    }(commented to test run it)*/
-    char *port_name_1 = argv[1]; // SBUS 
-    char *port_name_2 = argv[2]; // Sabertooth
+    char *port_name_1 = "test/sbus_data1"; // Adjust path if necessary
+    char *port_name_2 = "test/sab_data1";  // Adjust path if necessary
 
     FILE *sbus; 
     FILE *sabertooth;
@@ -34,7 +30,7 @@ int main(int argc, char** argv) {
         perror("Error opening SBUS port");
         return 1;
     }
-  //Error detection
+
     sabertooth = open_file(port_name_2, "w+");
     if (sabertooth == NULL) {
         perror("Error opening Sabertooth port");

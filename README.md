@@ -86,6 +86,16 @@ max_pwm = 2000;
 //I have included this to avoid errors and to ensure that the channel is within the range
     if (channel < min_sbus) channel = min_sbus;
     if (channel > max_sbus) channel = max_sbus;
+
+## ERROR THAT I TRIED TO RECTIFY BUT COULD NOT-
+char *port_name_1 = "test/sbus_data1"; // Adjust path if necessary
+char *port_name_2 = "test/sab_data1";  // Adjust path if necessary
+./main.exe test/sbus_data\[1\] test/sab_data[1]
+Error opening test/sbus_data1 : 2
+Error opening SBUS port: No such file or directory
+make: *** [makefile:12: check] Error 1
+
+The actual file path is sbus_data[1], I tried this with argv[1] but that also did not work. Replacing current code with sbus_data[1] gives error (reading file : 22Error reading file : 22Error reading file)
     
 # Google Form
 [Link to Repo Submission](https://docs.google.com/forms/d/e/1FAIpQLSeKVbm2dqWxwA5lbEkRfzY8KF619mI5ibGs0Cm2e5wrb0hoWQ/viewform)
