@@ -3,13 +3,15 @@
 #include <math.h>
 
 int interpolation(uint16_t channel) {
-    int min_sbus = 0;
-    int max_sbus = 2047;
-    int min_pwm = 1000;
-    int max_pwm = 2000;
-    int pwm = min_pwm + (channel - min_sbus) * (max_pwm - min_pwm) / (max_sbus - min_sbus);
+    int min_sbus = 0;    // Minimum SBUS value for motor control
+    int max_sbus = 2407;  // Maximum SBUS value for motor control
+    int min_pwm = 1;  // Corresponding PWM value for full reverse
+    int max_pwm = 127;  // Corresponding PWM value for full forward
+    
+    int pwm = round(1 + (channel- 0) * (127 - 1) / (2047 - 0));
     return pwm;
 }
+
 
 uint16_t *parse_buffer(uint8_t buff[]) { 
     // to store channels
